@@ -1,0 +1,268 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Offline Detection</title>
+    <style>
+        html {
+            
+            padding-top:40px;
+            width: 170px;
+            max-height: 100vh;
+            margin: 0 auto;
+        }
+
+        .trafficlight {
+            background: #222;
+            background-image: linear-gradient(transparent 2%, #111 2%, transparent 3%, #111 30%);
+            width: 170px;
+            height: 400px;
+            border-radius: 20px;
+            position: relative;
+            border: solid 5px #333;
+        }
+
+            .trafficlight:before {
+                background: #222;
+                background-image: radial-gradient(#444, #000);
+                content: "";
+                width: 170px;
+                height: 150px;
+                margin: 0 auto;
+                position: absolute;
+                top: -20px;
+                margin-left: 0px;
+                border-radius: 50%;
+                z-index: -1;
+            }
+
+            .trafficlight:after {
+                background: #222;
+                background-image: linear-gradient(-90deg, #222 0%, #444 30%, #000);
+                content: "";
+                width: 50px;
+                height: 53vh;
+                position: absolute;
+                top:100%;
+                left: calc(50% - 25px);
+                z-index: -1;
+            }
+
+        .protector {
+            background: transparent;
+            width: 180px;
+            height: 0;
+            position: absolute;
+            top: 20px;
+            left: -35px;
+            border-right: solid 30px transparent;
+            border-left: solid 30px transparent;
+            border-top: solid 90px #111;
+            border-radius: 10px;
+            z-index: -1;
+        }
+
+            .protector:nth-child(2) {
+                top: 140px;
+            }
+
+            .protector:nth-child(3) {
+                top: 260px;
+            }
+
+        .red {
+            background: red;
+            background-image: radial-gradient(brown, transparent);
+            background-size: 5px 5px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            position: absolute;
+            top: 20px;
+            left: 35px;
+            /*animation: 13s red infinite;*/
+            opacity: 0.2;
+            border: dotted 2px red;
+            box-shadow: 0 0 20px #111 inset, 0 0 10px red;
+        }
+
+        .yellow {
+            background: yellow;
+            background-image: radial-gradient(orange, transparent);
+            background-size: 5px 5px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: dotted 2px yellow;
+            position: absolute;
+            top: 145px;
+            left: 35px;
+            opacity: 0.2;
+            /*animation: 13s yellow infinite;*/
+            box-shadow: 0 0 20px #111 inset, 0 0 10px yellow;
+        }
+
+        .green {
+            background: green;
+            background-image: radial-gradient(lime, transparent);
+            background-size: 5px 5px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: dotted 2px lime;
+            position: absolute;
+            top: 270px;
+            left: 35px;
+            box-shadow: 0 0 20px #111 inset, 0 0 10px lime;
+            opacity:0.2;
+            /*animation: 13s green infinite;*/
+        }
+        .on {
+            opacity: 1;
+            animation: 1s light-on;
+        }
+        .off {
+            opacity: 1;
+            animation: 1s light-on;
+        }
+        .on-off {
+            animation: 1s light-on-off;
+        }
+        @keyframes light-off {
+            0% {
+                opacity: 1
+            }
+
+            20% {
+                opacity: .8
+            }
+
+            40% {
+                opacity: .6
+            }
+
+            60% {
+                opacity: .4
+            }
+
+            80% {
+                opacity: .2
+            }
+
+            100% {
+                opacity: .1
+            }
+        }
+
+        @keyframes light-on-off {
+            0% {
+                opacity: .2
+            }
+
+            20% {
+                opacity: .4
+            }
+
+            40% {
+                opacity: 8
+            }
+
+            50% {
+                opacity: .1
+            }
+
+            60% {
+                opacity: .8
+            }
+
+            80% {
+                opacity: .6
+            }
+
+            100% {
+                opacity: .2
+            }
+        }
+
+        @keyframes light-on {
+            0% {
+                opacity: .1
+            }
+
+            20% {
+                opacity: .2
+            }
+
+            40% {
+                opacity: .4
+            }
+
+            60% {
+                opacity: .6
+            }
+
+            80% {
+                opacity: .8
+            }
+
+            83% {
+                opacity: .83
+            }
+
+            86% {
+                opacity:.86
+            }
+
+            89% {
+                opacity: .89
+            }
+
+            93% {
+                opacity: .93
+            }
+
+            96% {
+                opacity: .96
+            }
+
+            100% {
+                opacity: 1
+            }
+        }
+    </style>
+</head>
+<body class="main">
+    <div class="trafficlight">
+        <div class="protector"></div>
+        <div class="protector"></div>
+        <div class="protector"></div>
+        <div class="red"></div>
+        <div class="yellow"></div>
+        <div class="green"></div>
+    </div>
+    <script>
+        /* Event listener on online and offline evnet*/
+        window.addEventListener('online', connectionStatus);
+        window.addEventListener('offline', connectionStatus);
+        window.addEventListener('load', connectionStatus);
+        window.addEventListener('click', connectionStatus);
+        // toggle class based on connection 
+        const redLight = document.querySelector('.red');
+        const greenLight = document.querySelector('.green');
+        const yellowLight = document.querySelector('.yellow');
+        function connectionStatus(event) {
+            const status = navigator.onLine ? "online" : "offline";
+            if (status == "online") {
+                yellowLight.classList.add('on-off');
+                greenLight.classList.add('on');
+                redLight.classList.remove('on');
+            }
+            else {
+                yellowLight.classList.add('on-off');
+                redLight.classList.add('on');
+                greenLight.classList.remove('on');              
+            }
+        }
+    </script>
+</body>
+</html>
